@@ -7,7 +7,7 @@
     $CONFIG = [
         "updateInterval" => 30,
         "version" => "1.0.0"
-        ]
+        ];
     
     $servers = [
         "lobby" => [
@@ -25,13 +25,13 @@
         "Faction" => [
             "servers" => [
                 "faction.evalgaming.xyz:19133"
-                ]
+                ],
             "display" => "Faction"
             ],
         "Prison" => [
             "servers" => [
                 "prison.evalgaming.xyz:19134"
-                ]
+                ],
             "display" => "Prison"
             ],
         ];
