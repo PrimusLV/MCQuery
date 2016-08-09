@@ -97,6 +97,7 @@ class MinecraftServer {
         );
         $response = $this->write($query);
         $return = array();
+        $return["address"] = $this->ip.":".$this->port;
         if(strlen($response)) {
             $return["status"] = 1;
             $tmp = explode("\x00\x01player_\x00\x00", $response);
