@@ -4,13 +4,36 @@
     require("MinecraftServer.php");
     
     @mkdir("../save");
+    $CONFIG = [
+        "updateInterval" => 30,
+        "version" => "1.0.0";
+        ]
+    
     $servers = [
         "lobby" => [
             "servers" => [
-                "104.237.0.21:19132",
+                "pe.evalgaming.xyz:19132",
                 ],
             "display" => "Lobby"
-            ]
+            ],
+        "Survival" => [
+            "servers" => [
+                "survival.evalgaming.xyz:19134"
+                ],
+            "display" => "Survival"
+            ],
+        "Faction" => [
+            "servers" => [
+                "faction.evalgaming.xyz:19133"
+                ]
+            "display" => "Faction"
+            ],
+        "Prison" => [
+            "servers" => [
+                "prison.evalgaming.xyz:19134"
+                ]
+            "display" => "Prison"
+            ],
         ];
     $updateInterval = 60;
     
@@ -27,9 +50,9 @@
     while($running) {
         sleep(1);
         if($loops === 0) {
-            info("Running!");
+            info("Running MCQuery V".$CONFIG["version"]."!");
         }
-        if($loops % $updateInterval === 0) {
+        if($loops % $CONFIG["updateInterval"] === 0) {
             // Update the servers
             foreach(getAllServers() as $server) {
                 if(!$server->connected()) {
@@ -69,7 +92,6 @@
         foreach($servers as $gamemode => $prop) {
             $save[$gamemode] = $prop;
             foreach($prop["servers"] as $key => $server) {
-                var_dump($server->getData());
                 $save[$gamemode]["servers"][$key] = json_encode($server->getData());
             }
         }
