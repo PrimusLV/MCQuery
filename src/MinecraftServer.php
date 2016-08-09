@@ -96,32 +96,37 @@ class MinecraftServer {
         ( $this->challenge >> 0 )
         );
         $response = $this->write($query);
-        var_dump($response);
-        $tmp = explode("\x00\x01player_\x00\x00", $response);
-        if(($pos = strpos($response, "\x00\x01")) !== false) {
-            $response = substr($response, 0, $pos);
-        }
-        $response = substr($response,16);
-        $response = explode("\0",$response);
-        array_pop($response);array_pop($response);array_pop($response);array_pop($response);
         $return = array();
-        $type = 0;
-        foreach ($response as $key)
-        {
-            if ($type == 0) $val = $key;
-            if ($type == 1) $return[$val] = $key;
-            $type == 0 ? $type = 1 : $type = 0;
-        }
-        if(isset($tmp[1])) {
-            $ps = explode("\x00", $tmp[1]);
-            $players = [];
-            foreach($ps as $p) {
-                if($p == "") break;
-                $players[] = $p;
+        if(strlen($response)) {
+            $return["status"] = 1;
+            $tmp = explode("\x00\x01player_\x00\x00", $response);
+            if(($pos = strpos($response, "\x00\x01")) !== false) {
+                $response = substr($response, 0, $pos);
             }
-            $return["players"] = $this->getPlayersDeep($players);
+            $response = substr($response,16);
+            $response = explode("\0",$response);
+            array_pop($response);array_pop($response);array_pop($response);array_pop($response);
+            $type = 0;
+            foreach ($response as $key)
+            {
+                if ($type == 0) $val = $key;
+                if ($type == 1) $return[$val] = $key;
+                $type == 0 ? $type = 1 : $type = 0;
+            }
+            if(isset($tmp[1])) {
+                $ps = explode("\x00", $tmp[1]);
+                $players = [];
+                foreach($ps as $p) {
+                    if($p == "") break;
+                    $players[] = $p;
+                }
+                $return["players"] = $this->getPlayersDeep($players);
+            } else {
+                $return["players"] = [];   
+            }
         } else {
-            $return["players"] = [];   
+            $return["status"] = 0;
+            $return["error"] = "Server is offline or unreachable";
         }
         $this->data = $return;
         return $return;
