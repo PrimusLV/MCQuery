@@ -61,6 +61,7 @@
                     info("Connected to ".$server->ip.":".$server->port."");
                 }
                 $server->getInfo();
+                info("Updated ".$server->ip.":".$server->port."");
             }
             save();
             info("Servers updated and saved");
@@ -99,5 +100,5 @@
     }
     
     function info($message) {
-        echo "[INFO]: ".$message."\n";
+        echo "[".date("H:i:s")." INFO]: ".$message."\n";
     }
